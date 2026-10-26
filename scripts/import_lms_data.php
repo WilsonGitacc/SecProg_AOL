@@ -88,11 +88,20 @@ try {
             is_active = 1
     ");
 
+    $defaultDummyPasswords = [
+        'student1'  => 'Lms#86bce5186214!9A',
+        'student2'  => 'Lms#b7fca94c6d54!9A',
+        'student3'  => 'Lms#8570f8613840!9A',
+        'lecturer1' => 'Lms#17f9232c1856!9A',
+        'lecturer2' => 'Lms#9b514d78632e!9A',
+        'operator'  => 'Lms#81a3eabe8551!9A',
+    ];
+
     foreach ($allUsers as $u) {
         $username = $u['username'];
         $role = $u['role'];
         $email = $u['email'] ?? PrivacyService::pseudonymizeEmail($username, $role);
-        $plainPass = generateRandomPassword();
+        $plainPass = $defaultDummyPasswords[$username] ?? generateRandomPassword();
         $hash = makeArgonHash($plainPass);
         $fullName = PrivacyService::pseudonymizeName($u['seed_key'], $role);
         $studentAlias = $role === 'student' ? PrivacyService::pseudonymizeStudentAlias($u['seed_key']) : null;

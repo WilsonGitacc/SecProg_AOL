@@ -13,10 +13,15 @@ docker compose up -d --build
 ```
 
 - **HTTPS Application URL**: `https://localhost:8443` (HTTP on port `80` redirects permanently to HTTPS `8443`).
-- **Retrieve One-Time Seeded Role Credentials**:
-  During container startup (or by re-running the idempotent offline importer), random passwords for the 3 roles (`student`, `lecturer`, `operator`) are generated, hashed with Argon2id, and printed once to stdout:
+- **Stop / Restart the Application**:
   ```bash
-  docker compose exec web php scripts/import_lms_data.php
+  docker compose stop   # Pause containers without losing database changes
+  docker compose start  # Resume containers
+  docker compose down   # Stop and remove containers (MySQL volume is preserved)
+  ```
+- **Re-seed / Reset Dummy Credentials**:
+  ```bash
+  docker compose exec web php scripts/import_lms_data.php --reset-passwords
   ```
 - **Run Complete Automated Security & Role Matrix Test Suite**:
   ```bash
@@ -27,7 +32,22 @@ docker compose up -d --build
 
 ---
 
-## 2. Verified Software Versions & End-of-Life (EOL) Schedule
+## 2. Dummy Login Credentials (All 6 Accounts Across 3 Roles)
+
+All accounts below are **100% synthetic, pseudonymized dummy accounts** (`@lms.ac.id`) hashed with **Argon2id** (`memory_cost=65536`, `time_cost=4`, `threads=1`). No real-world credentials, NIMs, or personal tokens are stored in this repository.
+
+| Role | Pseudonymized Full Name | Alias ID | Email / Username | Dummy Password | Assigned Scope / Courses |
+|------|-------------------------|----------|------------------|----------------|--------------------------|
+| **Student 1** | `Sora Bauer` | `STD-220725` | `sora.bauer@lms.ac.id` (`student1`) | `Lms#86bce5186214!9A` | Enrolled in all 4 `LEC` courses (`COMP6695001`, `COMP6800001`, `COMP6646001`, `COMP6843001`) |
+| **Student 2** | `Julian Takahashi` | `STD-411281` | `julian.takahashi@lms.ac.id` (`student2`) | `Lms#b7fca94c6d54!9A` | Enrolled in all 4 `LEC` courses (`COMP6695001`, `COMP6800001`, `COMP6646001`, `COMP6843001`) |
+| **Student 3** | `Klara Novak` | `STD-642656` | `klara.novak@lms.ac.id` (`student3`) | `Lms#8570f8613840!9A` | Enrolled in all 4 `LEC` courses (`COMP6695001`, `COMP6800001`, `COMP6646001`, `COMP6843001`) |
+| **Lecturer 1** | `Prof. Adrian Keller` | `LEC-4523` | `adrian.keller@lms.ac.id` (`lecturer1`) | `Lms#17f9232c1856!9A` | Teaches **2 courses**: `COMP6695001` (*Secure Programming*) & `COMP6646001` (*Computer Forensic*) |
+| **Lecturer 2** | `Prof. Naomi Vance` | `LEC-8125` | `naomi.vance@lms.ac.id` (`lecturer2`) | `Lms#9b514d78632e!9A` | Teaches **2 courses**: `COMP6800001` (*Human and Computer Interaction*) & `COMP6843001` (*Linux Scripting and Shell Programming*) |
+| **Operator (Support Officer)** | `Ops. Oscar Lindqvist` | `OPS-01` | `oscar.lindqvist@lms.ac.id` (`operator`) | `Lms#81a3eabe8551!9A` | **[1]** View & Edit Student/Lecturer Data (`5` accounts)<br>**[2]** Change Course Session Date (`6` sessions per course, fixed 100-min shifts) |
+
+---
+
+## 3. Verified Software Versions & End-of-Life (EOL) Schedule
 
 All versions were verified from official upstream sources (`php.net/supported-versions`, `dev.mysql.com`, `httpd.apache.org`) as of October 2026 and pinned in `docker/web/Dockerfile`, `compose.yaml`, and `composer.lock`:
 
@@ -43,7 +63,7 @@ We selected the official `php:8.5.12-apache-trixie` runtime running as unprivile
 
 ---
 
-## 3. Architecture & Dual-Network Isolation Diagrams
+## 4. Architecture & Dual-Network Isolation Diagrams
 
 ### A. Application & Security Architecture
 ```mermaid
@@ -73,23 +93,28 @@ flowchart LR
 
 ---
 
-## 4. Strict 3-Menu Navigation & Role Capabilities
+## 5. Role Capabilities & Navigation
 
-The sidebar contains **only 3 menus** (`Dashboard`, `Courses`, `Schedule`) for every role, while Profile, Password Re-authentication, TOTP 2FA, Session Revocation, and Personal Data JSON Export live in the top-right **Avatar Menu**:
+- **Student & Lecturer Sidebar (`3` Menus)**: `[1] Dashboard`, `[2] Courses`, `[3] Schedule`.
+- **Operator Sidebar (`2` Menus)**: `[1] Dashboard`, `[2] Courses` (and `/operator/users` for Student/Lecturer & Course Session Date management).
 
 1. **Dashboard (`/dashboard`)**:
-   - **Student**: Strictly shows **ONLY** *Upcoming Class* (type badge, course, class code `LC07`/`LD07`, session number, room/link, time, countdown, progress) and *Latest Forum Posts* (pseudonymized author alias, role badge, timestamp, title, course).
-   - **Lecturer**: Next class to teach + *Needs Attention* panel (pending excuses, ungraded items, reported posts, pending groups).
-   - **Operator**: System counters (active users, today's classes, pending tickets) + Service Ticket Queue.
+   - **Student**: Strictly shows **ONLY** *Upcoming Class* (type badge, course, class code `LC07`, session number, room/link, time, countdown, progress) and *Latest Forum Posts* (pseudonymized author alias, role badge, timestamp, title, course).
+   - **Lecturer**: Next class to teach + *Needs Attention* panel (ungraded items and reported forum posts for their 2 assigned courses).
+   - **Operator**: System counters (5 Student & Lecturer accounts, 4 `LEC` courses, 24 total sessions) + quick navigation to Operator Management (`/operator/users`).
 2. **Courses (`/courses` & `/courses/{id}`)**:
-   - Lists Term `2610` (`2026, Odd Semester`) **`LEC` courses only** (`LAB` category skipped): `COMP6873001`, `COMP6646001`, `COMP6800001`, `COMP6597001`, `COMP6696001`, `COMP6843001`, `COMP6695001`, `ENPR6312001`.
-   - Inside each course, displays **only 3 sessions** (`MAX_VISIBLE_SESSIONS = 3`, Sessions 5, 6, 7), including full Session 7 (`Review I`) learning outcomes, 6 sub-topics, and 19 materials for `COMP6695001`.
-   - **5 Course Tabs**: `Forum`, `Gradebook`, `People`, `Grouping`, `Attendance`.
-3. **Schedule (`/schedule`)**:
-   - Monthly calendar + agenda view in `GMT+7` with Neo-Brutalist badges for `Onsite Class`, `Virtual Class`, `Online`, `Onsite Exam`, and `Assignment`, type/date filters, today highlight, and personal `.ics` export (`/schedule/export.ics`).
+   - Lists Term `2610` (`2026, Odd Semester`) **4 active `LEC` courses**: `COMP6695001` (*Secure Programming*), `COMP6800001` (*Human and Computer Interaction*), `COMP6646001` (*Computer Forensic*), and `COMP6843001` (*Linux Scripting and Shell Programming*).
+   - Inside each course, displays **all 6 sessions (`Sessions 1–6`)**, including learning outcomes, sub-topics, and session materials.
+   - **Per-Session Isolated Forums**: Inside the `Forum` tab, each session (`Session 1` through `Session 6`) has its own isolated discussion forum (`6` distinct forums per course, `24` across all 4 courses).
+   - **Direct-Join Group Slots**: Lecturers open group slots (`Max Members`), and students can join open group slots directly without requiring lecturer approval.
+3. **Schedule (`/schedule` — Student & Lecturer)**:
+   - Interactive **October 2026** and **November 2026** monthly calendar grids dynamically synced with MySQL `schedule_entries` + chronological agenda view in `GMT+7` with type/date filters and personal `.ics` export (`/schedule/export.ics`).
+4. **Operator Management (`/operator/users`)**:
+   - **[1] View & Edit Student Data & Lecturer Data**: Manage full name, email, academic title, active status, and Argon2id password reset for the 5 Student & Lecturer accounts.
+   - **[2] Change Course Session Date**: Filter by Course (`COMP6695001`, `COMP6800001`, `COMP6646001`, `COMP6843001`) to view its 6 sessions and update session dates using fixed 100-minute university lecture shifts (`09:20–11:00`, `11:20–13:00`, `13:20–15:00`, `15:20–17:00`, `17:20–19:00`), automatically syncing both `course_sessions` and `schedule_entries`.
 
 ---
 
-## 5. Additional Documentation
+## 6. Additional Documentation
 - [`docs/data-sources.md`](file:///home/wkali/teamwork_projects/secure_lms/docs/data-sources.md): Burp MCP discovery, screenshot fallback documentation, and offline import pipeline.
 - [`docs/security.md`](file:///home/wkali/teamwork_projects/secure_lms/docs/security.md): Full Action × Role matrix, STRIDE threat model, OWASP Top 10 / ASVS L2 code mappings, `composer audit` & container security report, and self-review checklist.
