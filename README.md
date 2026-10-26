@@ -7,7 +7,7 @@ A security-first, Neo-Brutalist university Learning Management System (LMS) buil
 ## 1. One-Command Quick Start
 
 ```bash
-cd /home/wkali/teamwork_projects/secure_lms
+cd path_to_folder/secure_lms
 php scripts/generate_env.php   # Generates .env if not already present
 docker compose up -d --build
 ```
