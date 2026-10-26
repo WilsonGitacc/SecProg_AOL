@@ -1,0 +1,56 @@
+{
+  "privacy_notice": "All classmate and faculty names are deterministically pseudonymized at import time via PrivacyService. Zero real NIMs, emails, phone numbers, or photos are stored.",
+  "core_accounts": [
+    {
+      "uuid": "a1000000-0000-4000-8000-000000000001",
+      "username": "student1",
+      "email": "sora.bauer@lms.ac.id",
+      "role": "student",
+      "seed_key": "primary_student_account",
+      "totp_enabled": 0
+    },
+    {
+      "uuid": "a2000000-0000-4000-8000-000000000001",
+      "username": "student2",
+      "email": "julian.takahashi@lms.ac.id",
+      "role": "student",
+      "seed_key": "stu_seed_1",
+      "totp_enabled": 0
+    },
+    {
+      "uuid": "a2000000-0000-4000-8000-000000000002",
+      "username": "student3",
+      "email": "klara.novak@lms.ac.id",
+      "role": "student",
+      "seed_key": "stu_seed_6",
+      "totp_enabled": 0
+    },
+    {
+      "uuid": "a1000000-0000-4000-8000-000000000002",
+      "username": "lecturer1",
+      "email": "adrian.keller@lms.ac.id",
+      "role": "lecturer",
+      "seed_key": "lecturer_comp6695001",
+      "academic_title": "M.Kom., CEH",
+      "totp_enabled": 0
+    },
+    {
+      "uuid": "a3000000-0000-4000-8000-000000000001",
+      "username": "lecturer2",
+      "email": "naomi.vance@lms.ac.id",
+      "role": "lecturer",
+      "seed_key": "lec_seed_1",
+      "academic_title": "S.Kom., M.TI.",
+      "totp_enabled": 0
+    },
+    {
+      "uuid": "a1000000-0000-4000-8000-000000000003",
+      "username": "operator",
+      "email": "oscar.lindqvist@lms.ac.id",
+      "role": "operator",
+      "seed_key": "primary_operator_account",
+      "totp_enabled": 0
+    }
+  ],
+  "pseudonymized_peers_seeds": []
+}

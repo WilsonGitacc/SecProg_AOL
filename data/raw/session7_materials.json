@@ -1,0 +1,91 @@
+{
+  "source": "lms.binus.ac.id/lms/course/ab07cbfd-a934-416d-bcce-d49d068bc0e1/session/405fdfcb-4748-4f2e-adbd-af47cdf88641",
+  "auth_header": "Authorization: Bearer <redacted>",
+  "course_code": "COMP6695001",
+  "class_code": "LD07",
+  "session": {
+    "uuid": "405fdfcb-4748-4f2e-adbd-af47cdf88641",
+    "session_number": 7,
+    "title": "Review I",
+    "delivery_mode": "Onsite - F2F",
+    "start_time": "2026-10-26 09:20:00",
+    "end_time": "2026-10-26 11:00:00",
+    "room": "Anggrek - 605",
+    "learning_outcomes": [
+      {
+        "bloom_level": "(C2)",
+        "bloom_category": "Comprehension",
+        "description": "Describe Web Technology Environment",
+        "sort_order": 1
+      },
+      {
+        "bloom_level": "(C3)",
+        "bloom_category": "Application",
+        "description": "Construct Web Application",
+        "sort_order": 2
+      }
+    ],
+    "sub_topics": [
+      "Web Development using PHP",
+      "Session, Cookie, and Array",
+      "Input Validation and Sanitation",
+      "File Upload",
+      "Connect to Database",
+      "Data Manipulation to Database"
+    ],
+    "materials": [
+      {"title": "Wifi Attendance", "material_type": "attendance", "duration_label": "1h 40m", "duration_minutes": 100},
+      {"title": "Review I", "material_type": "slide", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "Cookie Security", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "File Upload Cheat Sheet", "material_type": "cheat_sheet", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "HTTP & HTTPS Concept", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "Input Validation Cheat Sheet", "material_type": "cheat_sheet", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PDO Prepared Statements", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP Basics", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP Configuration Security", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP Cookies", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP filter_var", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP htmlspecialchars", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP password_hash", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP PDO", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP Session Security INI", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "PHP Sessions", "material_type": "link", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "Query Parameterization Cheat Sheet", "material_type": "cheat_sheet", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "Session Management Cheat Sheet", "material_type": "cheat_sheet", "duration_label": "10m", "duration_minutes": 10},
+      {"title": "SQL Injection Prevention Cheat Sheet", "material_type": "cheat_sheet", "duration_label": "10m", "duration_minutes": 10}
+    ]
+  },
+  "dashboard_forum_threads": [
+    {
+      "uuid": "f1000000-0000-4000-8000-000000000001",
+      "course_code": "COMP6695001",
+      "class_code": "LD07",
+      "title": "List Kelompok dan Tema",
+      "author_role": "lecturer",
+      "created_at": "2026-10-07 09:50:00",
+      "body_raw": "Silakan tuliskan daftar anggota kelompok (maksimal 4 mahasiswa) beserta topik proyek aplikasi web aman yang akan dikerjakan pada semester ini.",
+      "is_pinned": 1
+    },
+    {
+      "uuid": "f1000000-0000-4000-8000-000000000002",
+      "course_code": "COMP6800001",
+      "class_code": "LC07",
+      "title": "Interface Evaluation Task",
+      "author_role": "lecturer",
+      "created_at": "2026-10-05 14:43:00",
+      "replied_at": "2026-10-10 17:00:00",
+      "body_raw": "Please submit your heuristic evaluation notes and usability findings for the Session 6 prototype before the next session.",
+      "is_pinned": 1
+    },
+    {
+      "uuid": "f1000000-0000-4000-8000-000000000003",
+      "course_code": "COMP6646001",
+      "class_code": "LD07",
+      "title": "Digital Forensics Chain of Custody Guidelines",
+      "author_role": "lecturer",
+      "created_at": "2026-10-05 10:02:00",
+      "body_raw": "Ensure your forensic disk image acquisition logs include SHA-256 integrity hashes before and after analysis.",
+      "is_pinned": 0
+    }
+  ]
+}

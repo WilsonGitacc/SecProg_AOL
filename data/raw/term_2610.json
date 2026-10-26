@@ -1,0 +1,11 @@
+{
+  "source": "lms.binus.ac.id/lms/course/2610?tab=LEC",
+  "auth_header": "Authorization: Bearer <redacted>",
+  "term": {
+    "code": "2610",
+    "name": "2026, Odd Semester",
+    "is_active": 1,
+    "start_date": "2026-09-01",
+    "end_date": "2027-01-31"
+  }
+}

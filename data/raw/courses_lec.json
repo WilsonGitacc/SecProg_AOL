@@ -1,0 +1,56 @@
+{
+  "source": "lms.binus.ac.id/lms/course/2610?tab=LEC",
+  "auth_header": "Authorization: Bearer <redacted>",
+  "period_code": "2610",
+  "filter_applied": "LEC_ONLY (4 courses selected, 2 per lecturer)",
+  "courses": [
+    {
+      "uuid": "c207cbfd-a934-416d-bcce-d49d068bc002",
+      "code": "COMP6646001",
+      "name": "Computer Forensic",
+      "class_code": "LD07",
+      "delivery_type": "LEC",
+      "credits_lecture": 2,
+      "credits_lab": 0,
+      "category": "Core Courses",
+      "class_progress_pct": 7,
+      "lecturer_username": "lecturer1"
+    },
+    {
+      "uuid": "c307cbfd-a934-416d-bcce-d49d068bc003",
+      "code": "COMP6800001",
+      "name": "Human and Computer Interaction",
+      "class_code": "LC07",
+      "delivery_type": "LEC",
+      "credits_lecture": 2,
+      "credits_lab": 0,
+      "category": "Core Courses",
+      "class_progress_pct": 28,
+      "lecturer_username": "lecturer2"
+    },
+    {
+      "uuid": "c607cbfd-a934-416d-bcce-d49d068bc006",
+      "code": "COMP6843001",
+      "name": "Reverse Engineering and Binary Exploitation",
+      "class_code": "LD07",
+      "delivery_type": "LEC",
+      "credits_lecture": 2,
+      "credits_lab": 0,
+      "category": "Core Courses",
+      "class_progress_pct": 7,
+      "lecturer_username": "lecturer2"
+    },
+    {
+      "uuid": "ab07cbfd-a934-416d-bcce-d49d068bc0e1",
+      "code": "COMP6695001",
+      "name": "Secure Programming",
+      "class_code": "LD07",
+      "delivery_type": "LEC",
+      "credits_lecture": 2,
+      "credits_lab": 0,
+      "category": "Core Courses",
+      "class_progress_pct": 5,
+      "lecturer_username": "lecturer1"
+    }
+  ]
+}

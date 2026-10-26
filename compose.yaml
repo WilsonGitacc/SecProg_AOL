@@ -1,0 +1,114 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    image: secure-lms-web:8.5.12
+    container_name: secure_lms_web
+    restart: unless-stopped
+    user: "33:33" # www-data:www-data
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "${HTTPS_PORT:-8443}:8443"
+      - "${HTTP_PORT:-80}:8080"
+    extra_hosts:
+      - "lms.binus.ac.id:127.0.0.1"
+      - "lms.binus.ac.id:::1"
+    environment:
+      APP_ENV: "${APP_ENV:-production}"
+      APP_DEBUG: "${APP_DEBUG:-0}"
+      APP_URL: "${APP_URL:-https://localhost:8443}"
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: "${DB_NAME:-secure_lms}"
+      DB_USER: "${DB_USER:-lms_app}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_MIGRATOR_USER: "${DB_MIGRATOR_USER:-lms_migrator}"
+      DB_MIGRATOR_PASSWORD: "${DB_MIGRATOR_PASSWORD}"
+      APP_KEY: "${APP_KEY}"
+    volumes:
+      - uploads_data:/var/www/html/storage/uploads
+      - logs_data:/var/www/html/storage/logs
+    tmpfs:
+      - /tmp:size=64M,uid=33,gid=33,mode=1777
+      - /var/run/apache2:size=16M,uid=33,gid=33,mode=0755
+      - /var/lock/apache2:size=16M,uid=33,gid=33,mode=0755
+      - /var/log/apache2:size=32M,uid=33,gid=33,mode=0755
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1024m
+        reservations:
+          cpus: '0.2'
+          memory: 256m
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "https://localhost:8443/healthz.php"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  db:
+    image: mysql:8.4.13
+    container_name: secure_lms_db
+    restart: unless-stopped
+    user: "999:999" # mysql:mysql
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      MYSQL_DATABASE: "${DB_NAME:-secure_lms}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_USER: "${DB_USER:-lms_app}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      DB_MIGRATOR_USER: "${DB_MIGRATOR_USER:-lms_migrator}"
+      DB_MIGRATOR_PASSWORD: "${DB_MIGRATOR_PASSWORD}"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./docker/db/init.sh:/docker-entrypoint-initdb.d/00-init.sh:ro
+      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    tmpfs:
+      - /tmp:size=128M,uid=999,gid=999,mode=1777
+      - /var/run/mysqld:size=32M,uid=999,gid=999,mode=0755
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1024m
+        reservations:
+          cpus: '0.2'
+          memory: 512m
+    networks:
+      - backend
+    # Note: Port 3306 is strictly NOT published to the host
+    healthcheck:
+      test: ["CMD-SHELL", "/usr/bin/mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true
+
+volumes:
+  db_data:
+  uploads_data:
+  logs_data:

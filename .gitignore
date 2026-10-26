@@ -1,0 +1,48 @@
+# ==============================================================================
+# Git Ignore Configuration - Secure Neo-Brutalist LMS
+# Strictly prevents secret leakage and runtime artifacts
+# ==============================================================================
+
+# --- Secrets & Environment Files (ZERO COMMITTED SECRETS) ---
+.env
+.env.*
+!.env.example
+*.key
+*.crt
+*.pem
+*.pfx
+*.p12
+
+# --- Composer Dependencies ---
+/vendor/
+composer.phar
+
+# --- Application Storage (Directories tracked via .gitkeep) ---
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+# --- Test Cache & Coverage Reports ---
+/.phpunit.cache/
+/.phpunit.result.cache
+/coverage/
+/reports/
+*.log
+
+# --- IDE & Operating System Artifacts ---
+.agents/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# --- Database Dumps & Scratch Files ---
+*.sql.bak
+*.dump
+*.tar.gz
+/data/raw/*.tmp
